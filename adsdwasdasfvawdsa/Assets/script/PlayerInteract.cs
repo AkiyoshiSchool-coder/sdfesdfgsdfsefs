@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
 public class PlayerInteract : MonoBehaviour
@@ -8,6 +9,7 @@ public class PlayerInteract : MonoBehaviour
 
     [SerializeField] private Camera camera;
     [SerializeField] private float Distance;
+    [SerializeField] private Transform objViewer;
     [SerializeField] private Vector3 Offset;
     [SerializeField] private Interactable currentInteractable;
 
@@ -38,7 +40,7 @@ public class PlayerInteract : MonoBehaviour
             if(interactable !=null)
             {
                 UIController.Instance.AtivarCursor(true);
-                if(Input.GetButtonDown(0))
+                if(Input.GetMouseButtonDown(0))
                 {
                     currentInteractable = interactable;
 
@@ -48,6 +50,7 @@ public class PlayerInteract : MonoBehaviour
                     {
                         originPosition = currentInteractable.transform.position;
                         originRotation = currentInteractable.transform.rotation;
+                        StartCoroutine(MovingObject(currentInteractable, objViewer.position));
                     }
                 }
             }
