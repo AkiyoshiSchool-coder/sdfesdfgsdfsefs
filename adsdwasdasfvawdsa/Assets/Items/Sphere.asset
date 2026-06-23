@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b5a7b01a4da7aa408bfcd405938b859, type: 3}
   m_Name: Sphere
   m_EditorClassIdentifier: Assembly-CSharp::Item
-  Pegavel: 0
+  Pegavel: 1
   audioClip: {fileID: 0}
   texto: 

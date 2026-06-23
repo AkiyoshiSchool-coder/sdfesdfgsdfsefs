@@ -1,5 +1,7 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerInteract : MonoBehaviour
 {
@@ -58,5 +60,17 @@ public class PlayerInteract : MonoBehaviour
         {
             UIController.Instance.AtivarCursor(false);
         }
+    }
+
+    IEnumerator MovingObject(Interactable obj, Vector3 pos)
+    {
+        float timer = 0;
+        while(timer<1)
+        {
+            obj.transform.position = Vector3.Lerp(obj.transform.position,pos, Time.deltaTime * 5);
+            timer+= Time.deltaTime;
+            yield return null;
+        }
+        obj.transform.position = pos;
     }
 }
