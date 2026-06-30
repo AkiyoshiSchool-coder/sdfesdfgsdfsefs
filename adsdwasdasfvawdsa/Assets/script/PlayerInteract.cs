@@ -21,7 +21,7 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] private bool isViewing;
     [SerializeField] private bool canFinish;
     public UnityEvent OnView;
-
+    public UnityEvent OnFinishView;
     void Start()
     {
         
@@ -41,6 +41,10 @@ public class PlayerInteract : MonoBehaviour
             if(currentInteractable.item.Pegavel && Input.GetMouseButton(0))
             {
                 RotateObject();
+            }
+            if(canFinish && Input.GetMouseButtonDown(1))
+            {
+                FinishViewing();
             }
             return;
         }
@@ -98,11 +102,12 @@ public class PlayerInteract : MonoBehaviour
         canFinish = false;
         isViewing = false;
         UIController.Instance.SetBackImage(false);
-        if(currentInteractable.item.pegavel)
+        if(currentInteractable.item.Pegavel)
         {
             currentInteractable.transform.rotation = originRotation;
-            StartCoroutine(MovingObject(currentInteractablem,originPosition));
+            StartCoroutine(MovingObject(currentInteractable,originPosition));
         }
+        OnFinishView.Invoke();
     }
     IEnumerator MovingObject(Interactable obj, Vector3 pos)
     {
