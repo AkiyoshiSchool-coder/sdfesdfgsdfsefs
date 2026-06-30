@@ -19,7 +19,7 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] private Quaternion originRotation;
 
     [SerializeField] private bool isViewing;
-
+    [SerializeField] private bool canFinish;
     public UnityEvent OnView;
 
     void Start()
@@ -56,12 +56,18 @@ public class PlayerInteract : MonoBehaviour
                 UIController.Instance.AtivarCursor(true);
                 if(Input.GetMouseButtonDown(0))
                 {
+                    if(interactable.isMoving)
+                    {
+                        return;
+                    }
 
                     OnView.Invoke();
 
                     currentInteractable = interactable;
 
                     isViewing = true;
+
+                    Invoke("CanFinish",1f);
 
                     if(currentInteractable.item.Pegavel)
                     {
@@ -81,9 +87,26 @@ public class PlayerInteract : MonoBehaviour
             UIController.Instance.AtivarCursor(false);
         }
     }
+    public void CanFinish()
+    {
+        canFinish = true;
+        UIController.Instance.SetBackImage(true);
+    }
 
+    public void FinishViewing()
+    {
+        canFinish = false;
+        isViewing = false;
+        UIController.Instance.SetBackImage(false);
+        if(currentInteractable.item.pegavel)
+        {
+            currentInteractable.transform.rotation = originRotation;
+            StartCoroutine(MovingObject(currentInteractablem,originPosition));
+        }
+    }
     IEnumerator MovingObject(Interactable obj, Vector3 pos)
     {
+        obj.isMoving = true;
         float timer = 0;
         while(timer<1)
         {
@@ -92,6 +115,7 @@ public class PlayerInteract : MonoBehaviour
             yield return null;
         }
         obj.transform.position = pos;
+        obj.isMoving = false;
     }
 
     void RotateObject()
