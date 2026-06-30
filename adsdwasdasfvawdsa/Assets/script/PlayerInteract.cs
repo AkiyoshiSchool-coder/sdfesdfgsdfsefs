@@ -127,11 +127,6 @@ public class PlayerInteract : MonoBehaviour
             Inventory.AddItem(currentInteractable.item);
             currentInteractable.OnCollect.Invoke();
         }
-        if(currentInteractable.item.Pegavel)
-        {
-            currentInteractable.transform.rotation = originRotation;
-            StartCoroutine(MovingObject(currentInteractable,originPosition));
-        }
         OnFinishView.Invoke();
     }
     IEnumerator MovingObject(Interactable obj, Vector3 pos)
