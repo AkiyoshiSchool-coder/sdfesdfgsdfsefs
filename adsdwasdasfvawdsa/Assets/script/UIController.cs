@@ -8,6 +8,7 @@ public class UIController : MonoBehaviour
 
     [SerializeField] private GameObject CursorAtivo;
     [SerializeField] private GameObject BackImage;
+    [SerializeField] private GameObject GrabImage;
     [SerializeField] private GameObject InventoryImage;
     public TMP_Text Inventory;
     public TMP_Text Info;
@@ -32,6 +33,10 @@ public class UIController : MonoBehaviour
     public void SetBackImage(bool choice)
     {
         BackImage.SetActive(choice);
+    }
+    public void SetGrabImage(bool choice)
+    {
+        GrabImage.SetActive(choice);
     }
     public void AtivarCursor(bool choice)
     {

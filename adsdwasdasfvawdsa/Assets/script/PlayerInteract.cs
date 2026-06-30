@@ -97,6 +97,10 @@ public class PlayerInteract : MonoBehaviour
     {
         canFinish = true;
         UIController.Instance.SetBackImage(true);
+        if(currentInteractable.item.inventoryItem)
+        {
+            UIController.Instance.SetGrabImage(true);
+        }
     }
 
     public void FinishViewing()
@@ -104,7 +108,20 @@ public class PlayerInteract : MonoBehaviour
         canFinish = false;
         isViewing = false;
         UIController.Instance.SetBackImage(false);
+        if(currentInteractable.item.Pegavel)
+        {
+            currentInteractable.transform.rotation = originRotation;
+            StartCoroutine(MovingObject(currentInteractable,originPosition));
+        }
+        OnFinishView.Invoke();
+    }
 
+    public void GrabItem()
+    {
+        canFinish = false;
+        isViewing = false;
+        UIController.Instance.SetBackImage(false);
+        UIController.Instance.SetGrabImage(false);
         if(currentInteractable.item.inventoryItem)
         {
             Inventory.AddItem(currentInteractable.item);
