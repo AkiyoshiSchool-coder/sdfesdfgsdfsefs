@@ -3,12 +3,14 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
+using UnityEngine.Events;
 
 public class PlayerInteract : MonoBehaviour
 {
 
     [SerializeField] private Camera camera;
     [SerializeField] private float Distance;
+    [SerializeField] private float rotateSpeed = 200;
     [SerializeField] private Transform objViewer;
     [SerializeField] private Vector3 Offset;
     [SerializeField] private Interactable currentInteractable;
@@ -17,6 +19,8 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] private Quaternion originRotation;
 
     [SerializeField] private bool isViewing;
+
+    public UnityEvent OnView;
 
     void Start()
     {
@@ -31,6 +35,16 @@ public class PlayerInteract : MonoBehaviour
 
     void CheckInteractables()
     {
+
+        if(isViewing)
+        {
+            if(currentInteractable.item.Pegavel && Input.GetMouseButton(0))
+            {
+                RotateObject();
+            }
+            return;
+        }
+
         RaycastHit hit;
         Vector3 Origin = camera.ViewportToWorldPoint(new Vector3(Offset.x,Offset.y,Offset.z));
 
@@ -42,6 +56,9 @@ public class PlayerInteract : MonoBehaviour
                 UIController.Instance.AtivarCursor(true);
                 if(Input.GetMouseButtonDown(0))
                 {
+
+                    OnView.Invoke();
+
                     currentInteractable = interactable;
 
                     isViewing = true;
@@ -75,5 +92,14 @@ public class PlayerInteract : MonoBehaviour
             yield return null;
         }
         obj.transform.position = pos;
+    }
+
+    void RotateObject()
+    {
+        float x = Input.GetAxis("Mouse X");
+        float y = Input.GetAxis("Mouse Y");
+
+        currentInteractable.transform.Rotate(camera.transform.right, - Mathf.Deg2Rad * y * rotateSpeed, Space.World);
+        currentInteractable.transform.Rotate(camera.transform.up, -Mathf.Deg2Rad * x * rotateSpeed, Space.World);
     }
 }
