@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Interactable : MonoBehaviour
 {
@@ -7,14 +8,6 @@ public class Interactable : MonoBehaviour
     [HideInInspector]
     public bool isMoving;
 
-    void Start()
-    {
-        
-    }
+    public UnityEvent OnCollect;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

@@ -15,6 +15,8 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] private Vector3 Offset;
     [SerializeField] private Interactable currentInteractable;
 
+    public PlayerInventory Inventory;
+
     [SerializeField] private Vector3 originPosition;
     [SerializeField] private Quaternion originRotation;
 
@@ -22,9 +24,9 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] private bool canFinish;
     public UnityEvent OnView;
     public UnityEvent OnFinishView;
-    void Start()
+    void Awake()
     {
-        
+        Inventory = GetComponent<PlayerInventory>();
     }
 
     // Update is called once per frame
@@ -102,6 +104,12 @@ public class PlayerInteract : MonoBehaviour
         canFinish = false;
         isViewing = false;
         UIController.Instance.SetBackImage(false);
+
+        if(currentInteractable.item.inventoryItem)
+        {
+            Inventory.AddItem(currentInteractable.item);
+            currentInteractable.OnCollect.Invoke();
+        }
         if(currentInteractable.item.Pegavel)
         {
             currentInteractable.transform.rotation = originRotation;

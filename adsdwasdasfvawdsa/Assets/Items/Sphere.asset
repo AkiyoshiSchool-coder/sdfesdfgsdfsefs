@@ -15,3 +15,5 @@ MonoBehaviour:
   Pegavel: 1
   audioClip: {fileID: 0}
   texto: 
+  inventoryItem: 1
+  collectText: PegouBola
